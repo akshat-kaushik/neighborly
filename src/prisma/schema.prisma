@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// // Define the data model using Prisma schema language
+
+// // User model
+// model User {
+//   id               Int       @id @default(autoincrement())
+//   email            String    @unique
+//   password         String
+//   name             String?
+//   role             UserRole  @default(USER)
+//   profile          Profile?
+//   createdAt        DateTime  @default(now())
+//   updatedAt        DateTime  @updatedAt
+
+//   // One-to-many relationship with messages
+//   sentMessages     Message[] @relation("SentMessages")
+//   receivedMessages Message[] @relation("ReceivedMessages")
+
+//   // One-to-many relationship with reviews
+//   writtenReviews   Review[]  @relation("WrittenReviews")
+//   receivedReviews  Review[]  @relation("ReceivedReviews")
+// }
+
+
+// // Profile model (for both volunteers and organizations)
+// model Profile {
+//   id              Int       @id @default(autoincrement())
+//   user            User      @relation(fields: [userId], references: [id])
+//   userId          Int       @unique
+//   bio             String?
+//   skills          String[]
+//   interests       String[]
+//   availabilities  Availability[]
+// }
+
+// // Availability model (for volunteer availability)
+// model Availability {
+//   id          Int       @id @default(autoincrement())
+//   profile     Profile   @relation(fields: [profileId], references: [id])
+//   profileId   Int
+//   dayOfWeek   String    // e.g., Monday, Tuesday, etc.
+//   startTime   DateTime
+//   endTime     DateTime
+// }
+
+// // Opportunity model
+// model Opportunity {
+//   id            Int         @id @default(autoincrement())
+//   title         String
+//   description   String
+//   organization  User        @relation(fields: [organizationId], references: [id])
+//   organizationId Int
+//   date          DateTime
+//   location      String
+//   skillsNeeded  String[]
+//   volunteers    Volunteer[] // Many-to-many relationship with volunteers
+//   tags          Tag[]       @relation(fields: [id], references: [opportunityId])
+// }
+
+// model Volunteer {
+//   id            Int         @id @default(autoincrement())
+//   user          User        @relation(fields: [userId], references: [id])
+//   userId        Int
+//   opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
+//   opportunityId Int
+//   hoursWorked   Float
+// }
+
+// model Message {
+//   id            Int       @id @default(autoincrement())
+//   sender        User      @relation("SentMessages", fields: [senderId], references: [id])
+//   senderId      Int
+//   receiver      User      @relation("ReceivedMessages", fields: [receiverId], references: [id])
+//   receiverId    Int
+//   content       String
+//   createdAt     DateTime  @default(now())
+// }
+
+// model Review {
+//   id              Int       @id @default(autoincrement())
+//   user            User      @relation("WrittenReviews", fields: [userId], references: [id])
+//   userId          Int
+//   organization    User      @relation("ReceivedReviews", fields: [organizationId], references: [id])
+//   organizationId  Int
+//   rating          Int       // Rating out of 5 stars
+//   comment         String?
+//   createdAt       DateTime  @default(now())
+// }
+
+// model Admin {
+//   id          Int       @id @default(autoincrement())
+//   user        User      @relation(fields: [userId], references: [id])
+//   userId      Int
+// }
+
+
+// model Session {
+//   id          Int       @id @default(autoincrement())
+//   userId      Int
+//   token       String
+//   createdAt   DateTime  @default(now())
+//   expiresAt   DateTime
+// }
+
+// // Tag model (for searching by tags)
+// model Tag {
+//   id             Int           @id @default(autoincrement())
+//   name           String
+//   opportunities  Opportunity[] @relation(fields: [opportunityId], references: [id])
+//   opportunityId  Int?
+// }
+
