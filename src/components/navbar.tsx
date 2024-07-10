@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`flex justify-center w-full bg-sky-200 ${
+      className={`z-50 flex justify-center w-full bg-sky-200 ${
         scrolled ? "fixed top-0 mt-0" : ""
       }`}
     >
