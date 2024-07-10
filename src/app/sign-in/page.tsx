@@ -11,7 +11,7 @@ export default function SignIn() {
         <div className="lg:grid lg:min-h-screen lg:grid-cols-12 overflow-hidden">
           <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6 overflow-hidden">
             <img
-              alt=""
+              alt="image of a login page"
               src="login_page.png"
               className="absolute inset-0 h-full w-full object-cover"
             />
