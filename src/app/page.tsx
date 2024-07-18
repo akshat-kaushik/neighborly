@@ -66,7 +66,7 @@ export default function Home() {
                 <div className="relative h-64 sm:h-80 lg:h-full">
                   <img
                     alt=""
-                    src="voul2.png"
+                    src="funding1.png"
                     className="absolute rounded-2xl  inset-0 h-full w-full object-cover"
                   />
                 </div>
