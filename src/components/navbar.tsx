@@ -56,7 +56,9 @@ export default function Navbar() {
           <a href="/volunteering" className="hidden md:inline-block">
             Volunteering
           </a>
-          <Button>Login</Button>
+          <a href="/sign-in">
+              <Button>Login</Button>  
+          </a>
         </div>
       </nav>
     </div>

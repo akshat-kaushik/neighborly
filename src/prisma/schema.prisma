@@ -11,17 +11,22 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  username   String   @unique
-  password   String
-  firstName  String
-  lastName   String
+  id           Int       @id @default(autoincrement())
+  FirstName    String
+  LastName     String
+  username     String    @unique
+  passwordHash String
+  email        String    @unique
+  token        String?
+  firstName    String
+  lastName     String
+  createdAt    DateTime  @default(now())
+  Profile      Profile?
 }
 
-model Todo {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String
-  done        Boolean @default(false)
-  userId      Int
+model Profile {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     @unique
+  createdAt DateTime @default(now())
 }

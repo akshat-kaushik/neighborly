@@ -18,7 +18,7 @@ export default function Home() {
       </div>
 
       <div>
-        <section className="">
+        <section className="bg-green-100">
           <div className="-z-50 mx-auto max-w-screen-2xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:h-screen lg:grid-cols-2">
               <div className="relative z-10 lg:py-16">
@@ -59,7 +59,7 @@ export default function Home() {
         </section>
       </div>
       <div>
-        <section className="">
+        <section className="mt-0 bg-sky-100">
           <div className="-z-50 mx-auto max-w-screen-2xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:h-screen lg:grid-cols-2">
               <div className="relative z-10 lg:py-16">

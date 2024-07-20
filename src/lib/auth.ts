@@ -6,7 +6,6 @@ import { NextAuthOptions } from "next-auth";
 import prisma from "./prisma";
 // import { signUpSchema } from "@/schema/signupSchema";
 
-
 const generateJWT = async (payload: JWTPayload): Promise<string> => {
   const secret = process.env.JWT_SECRET || "";
 
@@ -26,7 +25,12 @@ export const NEXT_AUTH: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Username" },
+        firstName: {
+          label: "firstName",
+          type: "text",
+          placeholder: "firstName",
+        },
+        lastName: { label: "lastName", type: "text", placeholder: "lastName" },
         email: { label: "Email", type: "text", placeholder: "Email" },
         password: {
           label: "Password",
@@ -35,12 +39,13 @@ export const NEXT_AUTH: NextAuthOptions = {
         },
       },
       async authorize(credentials: any): Promise<any> {
-        const username = credentials.username;
+        const firstName = credentials.firstName;
+        const lastName = credentials.lastName;
         const email = credentials.email;
         const password = credentials.password;
 
         // try {
-        //   signUpSchema.parse({ username, email, password });
+        //   signUpSchema.parse({ firstName, email, password });
         // } catch (e: any) {
         //   throw new Error(e.errors[0].message);
         // }
@@ -48,11 +53,11 @@ export const NEXT_AUTH: NextAuthOptions = {
         try {
           const userDb = await prisma.user.findFirst({
             where: {
-              OR: [{ username: username }, { email: email }],
+              OR: [{ firstName: firstName }, { email: email }],
             },
             select: {
               id: true,
-              username: true,
+              firstName: true,
               email: true,
               passwordHash: true,
             },
@@ -77,7 +82,7 @@ export const NEXT_AUTH: NextAuthOptions = {
 
             return {
               id: userDb.id,
-              username: userDb.username,
+              firstName: userDb.firstName,
               email: userDb.email,
               token: jwt,
             };
@@ -87,13 +92,13 @@ export const NEXT_AUTH: NextAuthOptions = {
 
           const user = await prisma.user.create({
             data: {
-              username: username,
+              firstName: firstName,
               email: email,
               passwordHash: hashedPassword,
             },
             select: {
               id: true,
-              username: true,
+              firstName: true,
               email: true,
             },
           });
@@ -113,7 +118,7 @@ export const NEXT_AUTH: NextAuthOptions = {
 
           return {
             id: user.id,
-            username: user.username,
+            firstName: user.firstName,
             email: user.email,
             token: jwt,
           };
@@ -129,11 +134,18 @@ export const NEXT_AUTH: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET || "",
+  pages: {
+    signIn: "/auth/signin", // Custom sign-in page
+    // signOut: "/auth/signout", // Custom sign-out page
+    // error: "/auth/error", // Custom error page
+    // // verifyRequest: '/auth/verify-request',  // Verification request
+    // // newUser: '/auth/new-user'  // New user (sign up) page
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.username = user.username;
+        token.firstName = user.firstName;
         token.email = user.email;
       }
       return token;
@@ -141,7 +153,7 @@ export const NEXT_AUTH: NextAuthOptions = {
     async session({ session, token }: any) {
       if (token) {
         session.user.id = token.id;
-        session.user.username = token.username;
+        session.user.firstName = token.firstName;
         session.user.email = token.email;
       }
       return session;
@@ -157,7 +169,7 @@ export const NEXT_AUTH: NextAuthOptions = {
             },
             update: {
               //@ts-ignore
-              username: user.name,
+              firstName: user.name,
               email: user.email,
               profileImage: user.image,
               passwordHash: "",
@@ -165,13 +177,13 @@ export const NEXT_AUTH: NextAuthOptions = {
             create: {
               email: user.email,
               //@ts-ignore
-              username: user.name,
+              firstName: user.name,
               profileImage: user.image,
               passwordHash: "",
             },
             select: {
               id: true,
-              username: true,
+              firstName: true,
               email: true,
             },
           });
