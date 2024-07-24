@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import { JWTPayload, SignJWT, importJWK } from "jose";
 import { NextAuthOptions } from "next-auth";
 import prisma from "./prisma";
-// import { signUpSchema } from "@/schema/signupSchema";
 
 const generateJWT = async (payload: JWTPayload): Promise<string> => {
   const secret = process.env.JWT_SECRET || "";
@@ -25,12 +24,6 @@ export const NEXT_AUTH: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        firstName: {
-          label: "firstName",
-          type: "text",
-          placeholder: "firstName",
-        },
-        lastName: { label: "lastName", type: "text", placeholder: "lastName" },
         email: { label: "Email", type: "text", placeholder: "Email" },
         password: {
           label: "Password",
@@ -39,25 +32,16 @@ export const NEXT_AUTH: NextAuthOptions = {
         },
       },
       async authorize(credentials: any): Promise<any> {
-        const firstName = credentials.firstName;
-        const lastName = credentials.lastName;
         const email = credentials.email;
         const password = credentials.password;
-
-        // try {
-        //   signUpSchema.parse({ firstName, email, password });
-        // } catch (e: any) {
-        //   throw new Error(e.errors[0].message);
-        // }
 
         try {
           const userDb = await prisma.user.findFirst({
             where: {
-              OR: [{ firstName: firstName }, { email: email }],
+                email: email,
             },
             select: {
               id: true,
-              firstName: true,
               email: true,
               passwordHash: true,
             },
@@ -82,7 +66,6 @@ export const NEXT_AUTH: NextAuthOptions = {
 
             return {
               id: userDb.id,
-              firstName: userDb.firstName,
               email: userDb.email,
               token: jwt,
             };
@@ -92,13 +75,11 @@ export const NEXT_AUTH: NextAuthOptions = {
 
           const user = await prisma.user.create({
             data: {
-              firstName: firstName,
               email: email,
               passwordHash: hashedPassword,
             },
             select: {
               id: true,
-              firstName: true,
               email: true,
             },
           });
@@ -118,7 +99,6 @@ export const NEXT_AUTH: NextAuthOptions = {
 
           return {
             id: user.id,
-            firstName: user.firstName,
             email: user.email,
             token: jwt,
           };
@@ -135,17 +115,13 @@ export const NEXT_AUTH: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "",
   pages: {
-    signIn: "/auth/signin", // Custom sign-in page
-    // signOut: "/auth/signout", // Custom sign-out page
-    // error: "/auth/error", // Custom error page
-    // // verifyRequest: '/auth/verify-request',  // Verification request
-    // // newUser: '/auth/new-user'  // New user (sign up) page
+    signIn: "/auth/signin",
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.firstName = user.firstName;
+        token.firstName = user.FirstName;
         token.email = user.email;
       }
       return token;
@@ -169,21 +145,16 @@ export const NEXT_AUTH: NextAuthOptions = {
             },
             update: {
               //@ts-ignore
-              firstName: user.name,
               email: user.email,
-              profileImage: user.image,
               passwordHash: "",
             },
             create: {
               email: user.email,
               //@ts-ignore
-              firstName: user.name,
-              profileImage: user.image,
               passwordHash: "",
             },
             select: {
               id: true,
-              firstName: true,
               email: true,
             },
           });
