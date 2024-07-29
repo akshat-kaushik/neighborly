@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getProviders, signIn } from "next-auth/react";
-import { z } from "zod";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -15,20 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link } from "lucide-react";
+import { signSchema } from "@/schema/signSchema";
 
-const formSchema = z
-  .object({
-    email: z.string().email("Invalid email").min(1, "Email is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    password_confirmation: z
-      .string()
-      .min(6, "Confirm Password must be at least 6 characters"),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "Passwords don't match",
-    path: ["password_confirmation"],
-  });
+
 
 export default function SignIn() {
   const [providers, setProviders] = useState<Record<string, any>>();
@@ -42,7 +31,7 @@ export default function SignIn() {
   }, []);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(signSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -50,8 +39,14 @@ export default function SignIn() {
     },
   });
 
-  const onSubmit = async (values) => {
-    const {email, password } = values;
+    type Values = {
+      email: string;
+      password: string;
+    };
+
+  const onSubmit = async (values: Values): Promise<void> => {
+    const { email, password } = values;
+    console.log(values);
 
     const result = await signIn("credentials", {
       redirect: false,
@@ -110,7 +105,7 @@ export default function SignIn() {
                           <FormControl>
                             <Input
                               type="email"
-                              placeholder="example@example.com"
+                              placeholder="email"
                               {...field}
                             />
                           </FormControl>

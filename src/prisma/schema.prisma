@@ -24,9 +24,11 @@ model Profile {
   user      User    @relation(fields: [userId], references: [id])
   FirstName    String
   LastName     String
+  City        String
+  Country     String
   image    String?
   bio      String?
-  skills  String[]
+  Age       Int
   userId    Int     @unique
   createdAt DateTime @default(now())
 }

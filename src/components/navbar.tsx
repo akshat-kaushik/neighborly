@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
+  const page=window.location.pathname;
   const handleScroll = () => {
     if (window.scrollY > 0) {
       setScrolled(true);
@@ -25,9 +26,9 @@ export default function Navbar() {
 
   return (
     <div
-      className={`z-50 flex justify-center w-full bg-sky-200 ${
+      className={`z-50 flex justify-center w-full ${
         scrolled ? "fixed top-0 mt-0" : ""
-      }`}
+      }  ${page == "/" ? "bg-sky-200" : "bg-gray-100"}`}
     >
       <nav
         className={`flex relative items-center h-20 justify-between shadow-2xl p-4 bg-teal-600 transition-all duration-500 ease-in-out ${
@@ -45,7 +46,7 @@ export default function Navbar() {
         <div className="absolute flex left-1/2 -translate-x-1/2">
           <HeartHandshake size={36} />
           <h1 className="ml-2 text-2xl md:text-4xl font-bold text-center">
-            Neighborly
+            GooDeeD
           </h1>
         </div>
 
@@ -57,7 +58,7 @@ export default function Navbar() {
             Volunteering
           </a>
           <a href="/sign-in">
-              <Button>Login</Button>  
+            <Button>Login</Button>
           </a>
         </div>
       </nav>

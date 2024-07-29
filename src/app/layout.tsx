@@ -4,11 +4,12 @@ import "./globals.css";
 import "../components/navbar";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import ProtectedRoute from "../context/ProtectedRoute";
 
 const mont = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Neighborly",
+  title: "GoodDeeD",
   description: "",
 };
 
@@ -19,11 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={mont.className}>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+      <ProtectedRoute>
+        <body className={mont.className}>
+          <Navbar />
+          {children}
+          <Footer />
+        </body>
+      </ProtectedRoute>
     </html>
   );
 }

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import type { NextMiddleware, NextRequest } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
+export {default} from "next-auth/middleware"
 import { getToken } from "next-auth/jwt";
 
 
@@ -25,8 +25,6 @@ export async function middleware(req: CustomNextRequest) {
 export const config = {
   matcher: [
     "/api/auth/[...nextauth]",
-    "/api/auth/signin",
-    "/api/auth/signout",
     "/api/user",
   ],
 };

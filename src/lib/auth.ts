@@ -121,7 +121,6 @@ export const NEXT_AUTH: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.firstName = user.FirstName;
         token.email = user.email;
       }
       return token;
@@ -129,7 +128,6 @@ export const NEXT_AUTH: NextAuthOptions = {
     async session({ session, token }: any) {
       if (token) {
         session.user.id = token.id;
-        session.user.firstName = token.firstName;
         session.user.email = token.email;
       }
       return session;
